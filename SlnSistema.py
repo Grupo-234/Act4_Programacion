@@ -20,6 +20,9 @@ print("La resta de", num1, "y", num2, "es:", resta)
 multiplicacion = num1 * num2
 print("La multiplicación de", num1, "y", num2, "es:", multiplicacion)
 
+division = num1 / num2
+print("La división de", num1, "y", num2, "es:", division)
+
 
 
 #Definir la clase del sistema
