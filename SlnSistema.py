@@ -19,5 +19,8 @@ print("La multiplicación de", num1, "y", num2, "es:", multiplicacion)
 
 print("Prueba angela")
 
-#Definir la clase del sistema
+#Conexion Grafica VSC Angela
+
+print("Prueba conexion Version GUI")
+
 
