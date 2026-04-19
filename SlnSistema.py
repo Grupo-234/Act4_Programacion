@@ -17,6 +17,9 @@ print("La suma de", num1, "y", num2, "es:", suma)
 resta = num1 - num2
 print("La resta de", num1, "y", num2, "es:", resta)
 
+multiplicacion = num1 * num2
+print("La multiplicación de", num1, "y", num2, "es:", multiplicacion)
+
 
 
 #Definir la clase del sistema
