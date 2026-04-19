@@ -3,24 +3,9 @@
 ##Grupo: 213023_234
 #Actualizacion Commit desde Visul Studio Code
 
-num1 = int(input("Ingrese el primer número: "))
-num2 = int(input("Ingrese el segundo número: "))
-num3 = int(input("Ingrese el tercer número: "))
+#Importar lIbrerias
+import tkinter 
 
-suma = num1 + num2
 
-print("La suma de", num1, "y", num2, "es:", suma)
-
-resta = num1 - num2
-print("La resta de", num1, "y", num2, "es:", resta)
-
-multiplicacion = num1 * num2
-print("La multiplicación de", num1, "y", num2, "es:", multiplicacion)
-
-print("Prueba angela")
-
-#Conexion Grafica VSC Angela
-
-print("Prueba conexion Version GUI")
 
 
