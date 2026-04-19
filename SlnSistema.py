@@ -1,4 +1,7 @@
-from abc import ABC, abstractmethod
-from datetime import datetime
+##Componente práctico - Prácticas simuladas
+##Programacion orientada a objetos
+##Grupo: 213023_234
 
- ##Prueba de commit
+print("Bienvenido al sistema")
+#Procedimiento para mostrar el menú de opciones
+#Prueba conexion
