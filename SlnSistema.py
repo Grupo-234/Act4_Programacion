@@ -14,7 +14,7 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
-# 1. Clase Abstracta que representa entidades generales [cite: 21]
+# 1. Clase Abstracta que representa entidades generales
 class EntidadPersona(ABC):
     def __init__(self, tipo_doc, num_doc, nombre_completo, telefono, correo=None):
         # Aplicamos encapsulación con atributos protegidos
@@ -26,7 +26,7 @@ class EntidadPersona(ABC):
         self._estado = "Activo"
         self._fecha_registro = datetime.now()
 
-    # Métodos de validación robusta
+    # Métodos de validacion documento de identidad
     def _validar_documento(self, valor):
         if not str(valor).isdigit():
             error_msg = f"ID inválido: {valor}. Solo se permiten números."
@@ -34,6 +34,7 @@ class EntidadPersona(ABC):
             raise ValueError(error_msg)
         return valor
 
+    #Validacion de telefono: maximo 10 digitos numericos
     def _validar_telefono(self, valor):
         if len(str(valor)) > 10 or not str(valor).isdigit():
             error_msg = f"Teléfono inválido: {valor}. Máximo 10 dígitos numéricos."
@@ -41,6 +42,7 @@ class EntidadPersona(ABC):
             raise ValueError(error_msg)
         return valor
 
+    #Validacion de correo: debe contener "@" y "."
     def _validar_correo(self, valor):
         if valor and ("@" not in valor or "." not in valor):
             error_msg = f"Formato de correo incorrecto: {valor}."
@@ -52,6 +54,4 @@ class EntidadPersona(ABC):
     def mostrar_perfil(self):
         """Obliga a las clases hijas a implementar su propia descripción"""
         pass
-    
-
 
