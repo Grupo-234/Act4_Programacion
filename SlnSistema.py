@@ -1,31 +1,57 @@
 ##Componente práctico - Prácticas simuladas
 ##Programacion orientada a objetos
 ##Grupo: 213023_234
-#Actualizacion Commit desde Visul Studio Code
+#Sistema Integral de Gestión de Clientes, Servicios y Reservas
 
-#Importar librerias del sistema
-import _tkinter as tk
-from tkinter import messagebox
+from abc import ABC, abstractmethod
+import logging
+from datetime import datetime
 
-num1 = int(input("Ingrese el primer número: "))
-num2 = int(input("Ingrese el segundo número: "))
-num3 = int(input("Ingrese el tercer número: "))
+# Configuración del archivo de logs 
+logging.basicConfig(
+    filename='registro_eventos.log', 
+    level=logging.ERROR,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
-suma = num1 + num2
+# 1. Clase Abstracta que representa entidades generales [cite: 21]
+class EntidadPersona(ABC):
+    def __init__(self, tipo_doc, num_doc, nombre_completo, telefono, correo=None):
+        # Aplicamos encapsulación con atributos protegidos
+        self._tipo_doc = tipo_doc
+        self._num_doc = self._validar_documento(num_doc)
+        self._nombre_completo = nombre_completo
+        self._telefono = self._validar_telefono(telefono)
+        self._correo = self._validar_correo(correo)
+        self._estado = "Activo"
+        self._fecha_registro = datetime.now()
 
-print("La suma de", num1, "y", num2, "es:", suma)
+    # Métodos de validación robusta
+    def _validar_documento(self, valor):
+        if not str(valor).isdigit():
+            error_msg = f"ID inválido: {valor}. Solo se permiten números."
+            logging.error(error_msg) # Registro en el log
+            raise ValueError(error_msg)
+        return valor
 
-resta = num1 - num2
-print("La resta de", num1, "y", num2, "es:", resta)
+    def _validar_telefono(self, valor):
+        if len(str(valor)) > 10 or not str(valor).isdigit():
+            error_msg = f"Teléfono inválido: {valor}. Máximo 10 dígitos numéricos."
+            logging.error(error_msg)
+            raise ValueError(error_msg)
+        return valor
 
-multiplicacion = num1 * num2
-print("La multiplicación de", num1, "y", num2, "es:", multiplicacion)
+    def _validar_correo(self, valor):
+        if valor and ("@" not in valor or "." not in valor):
+            error_msg = f"Formato de correo incorrecto: {valor}."
+            logging.error(error_msg)
+            raise ValueError(error_msg)
+        return valor
 
-division = num1 / num2
-print("La división de", num1, "y", num2, "es:", division)
+    @abstractmethod
+    def mostrar_perfil(self):
+        """Obliga a las clases hijas a implementar su propia descripción"""
+        pass
+    
 
-multiplicacion2 = num1 * num2 * num3
-print("La multiplicación de", num1, ",", num2, "y", num3, "es:", multiplicacion2)
-
-#Definir la clase del sistema
 
