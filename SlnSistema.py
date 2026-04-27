@@ -55,3 +55,18 @@ class EntidadPersona(ABC):
         """Obliga a las clases hijas a implementar su propia descripción"""
         pass
 
+class Cliente(EntidadPersona):
+
+    def __init__(self, nombre, documento, telefono, correo):
+        self.nombre = nombre
+        self.documento = self._validar_documento(documento)
+        self.telefono = self._validar_telefono(telefono)
+        self.correo = self._validar_correo(correo)
+
+    def mostrar_perfil(self):
+        return f"""
+        Nombre: {self.nombre}
+        Documento: {self.documento}
+        Teléfono: {self.telefono}
+        Correo: {self.correo}
+        """
