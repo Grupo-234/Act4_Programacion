@@ -15,7 +15,7 @@ logging.basicConfig(
 #Manejo de errores especificos
 ############################
 class ErrorValidacionDatos(Exception):
-    """Se dispara si el ID o Teléfono no cumplen el formato."""
+    """Cedula y Telefono deben ser numeros enteros"""
     pass
 
 class ErrorOperacionReserva(Exception):
