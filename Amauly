@@ -1,9 +1,10 @@
+
 #==================================
 # Clase Cliente
 # Maneja la información del cliente
 #==================================
 
-class Cliente:
+class Cliente(EntidadPersona):
 
     # Constructor de la clase
     def __init__(self, nombre, cedula, telefono, correo, direccion):
@@ -64,4 +65,21 @@ class Cliente:
     # Actualizar dirección
     #==================================
     def actualizar_direccion(self, nueva_direccion):
+
+        # Valida dirección
+        if nueva_direccion == "":
+            raise ValueError("La dirección no puede estar vacía")
+
+        # Actualiza dirección
         self._direccion = nueva_direccion
+
+    #==================================
+    # Método resumen
+    #==================================
+    def resumen_cliente(self):
+
+        # Retorna información corta del cliente
+        return f"{self._nombre} - {self._correo}"
+```
+
+
