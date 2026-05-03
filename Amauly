@@ -13,6 +13,10 @@ class Cliente:
 
         # Guarda el nombre del cliente
         self.nombre = nombre
+# Valida que la cédula tenga solo números
+if not cedula.isdigit():
+    raise ValueError("La cédula debe contener solo números")
+Se agrega validación de cédula
 
         # Guarda la cédula del cliente
         self.cedula = cedula
