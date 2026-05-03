@@ -1,17 +1,12 @@
-# Clase Cliente Completa
 
-
-```python
 #==================================
 # Clase Cliente
-# Hereda de EntidadPersona
 # Maneja la información del cliente
 #==================================
 
 class Cliente(EntidadPersona):
 
     # Constructor de la clase
-    # Recibe los datos principales del cliente
     def __init__(self, nombre, cedula, telefono, correo, direccion):
 
         # Guarda el nombre del cliente
@@ -24,7 +19,7 @@ class Cliente(EntidadPersona):
         # Guarda la cédula
         self._cedula = cedula
 
-        # Valida longitud del teléfono
+        # Valida teléfono
         if len(telefono) < 7:
             raise ValueError("Teléfono inválido")
 
@@ -38,19 +33,14 @@ class Cliente(EntidadPersona):
         # Guarda correo
         self._correo = correo
 
-        # Valida dirección
-        if direccion == "":
-            raise ValueError("La dirección no puede estar vacía")
-
         # Guarda dirección
         self._direccion = direccion
 
     #==================================
-    # Método para mostrar información
+    # Método mostrar perfil
     #==================================
     def mostrar_perfil(self):
 
-        # Retorna la información organizada
         return f"""
         Nombre: {self._nombre}
         Cédula: {self._cedula}
@@ -60,31 +50,19 @@ class Cliente(EntidadPersona):
         """
 
     #==================================
-    # Método para actualizar teléfono
+    # Actualizar teléfono
     #==================================
     def actualizar_telefono(self, nuevo_telefono):
-
-        # Valida longitud mínima
-        if len(nuevo_telefono) < 7:
-            raise ValueError("Teléfono inválido")
-
-        # Actualiza teléfono
         self._telefono = nuevo_telefono
 
     #==================================
-    # Método para actualizar correo
+    # Actualizar correo
     #==================================
     def actualizar_correo(self, nuevo_correo):
-
-        # Valida correo
-        if "@" not in nuevo_correo:
-            raise ValueError("Correo inválido")
-
-        # Actualiza correo
         self._correo = nuevo_correo
 
     #==================================
-    # Método para actualizar dirección
+    # Actualizar dirección
     #==================================
     def actualizar_direccion(self, nueva_direccion):
 
