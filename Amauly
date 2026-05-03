@@ -1,30 +1,50 @@
-https://github.com/Grupo-234/Act4_Programacion.git
+# Clase Cliente Completa
+
+Copia y pega este código completo dentro de tu archivo de la clase Cliente.
+
+```python
 #==================================
 # Clase Cliente
 # Hereda de EntidadPersona
 # Maneja la información del cliente
 #==================================
 
-class Cliente:
+class Cliente(EntidadPersona):
 
     # Constructor de la clase
     # Recibe los datos principales del cliente
     def __init__(self, nombre, cedula, telefono, correo, direccion):
 
         # Guarda el nombre del cliente
-        self.nombre = nombre
+        self._nombre = nombre
 
-        # Guarda la cédula del cliente
-        self.cedula = cedula
+        # Valida que la cédula tenga solo números
+        if not cedula.isdigit():
+            raise ValueError("La cédula debe contener solo números")
 
-        # Guarda el teléfono del cliente
-        self.telefono = telefono
+        # Guarda la cédula
+        self._cedula = cedula
 
-        # Guarda el correo electrónico
-        self.correo = correo
+        # Valida longitud del teléfono
+        if len(telefono) < 7:
+            raise ValueError("Teléfono inválido")
 
-        # Guarda la dirección del cliente
-        self.direccion = direccion
+        # Guarda teléfono
+        self._telefono = telefono
+
+        # Valida correo
+        if "@" not in correo:
+            raise ValueError("Correo inválido")
+
+        # Guarda correo
+        self._correo = correo
+
+        # Valida dirección
+        if direccion == "":
+            raise ValueError("La dirección no puede estar vacía")
+
+        # Guarda dirección
+        self._direccion = direccion
 
     #==================================
     # Método para mostrar información
@@ -33,11 +53,11 @@ class Cliente:
 
         # Retorna la información organizada
         return f"""
-        Nombre: {self.nombre}
-        Cédula: {self.cedula}
-        Teléfono: {self.telefono}
-        Correo: {self.correo}
-        Dirección: {self.direccion}
+        Nombre: {self._nombre}
+        Cédula: {self._cedula}
+        Teléfono: {self._telefono}
+        Correo: {self._correo}
+        Dirección: {self._direccion}
         """
 
     #==================================
@@ -45,21 +65,44 @@ class Cliente:
     #==================================
     def actualizar_telefono(self, nuevo_telefono):
 
-        # Cambia el teléfono del cliente
-        self.telefono = nuevo_telefono
+        # Valida longitud mínima
+        if len(nuevo_telefono) < 7:
+            raise ValueError("Teléfono inválido")
+
+        # Actualiza teléfono
+        self._telefono = nuevo_telefono
 
     #==================================
     # Método para actualizar correo
     #==================================
     def actualizar_correo(self, nuevo_correo):
 
-        # Cambia el correo del cliente
-        self.correo = nuevo_correo
+        # Valida correo
+        if "@" not in nuevo_correo:
+            raise ValueError("Correo inválido")
+
+        # Actualiza correo
+        self._correo = nuevo_correo
 
     #==================================
     # Método para actualizar dirección
     #==================================
     def actualizar_direccion(self, nueva_direccion):
 
-        # Cambia la dirección del cliente
-        self.direccion = nueva_direccion
+        # Valida dirección
+        if nueva_direccion == "":
+            raise ValueError("La dirección no puede estar vacía")
+
+        # Actualiza dirección
+        self._direccion = nueva_direccion
+
+    #==================================
+    # Método resumen
+    #==================================
+    def resumen_cliente(self):
+
+        # Retorna información corta del cliente
+        return f"{self._nombre} - {self._correo}"
+```
+
+
