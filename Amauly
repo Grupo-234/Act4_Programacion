@@ -1,69 +1,67 @@
-https://github.com/Grupo-234/Act4_Programacion.git
 #==================================
 # Clase Cliente
-# Hereda de EntidadPersona
 # Maneja la información del cliente
 #==================================
 
 class Cliente:
 
     # Constructor de la clase
-    # Recibe los datos principales del cliente
     def __init__(self, nombre, cedula, telefono, correo, direccion):
 
         # Guarda el nombre del cliente
-        self.nombre = nombre
-# Valida que la cédula tenga solo números
-if not cedula.isdigit():
-    raise ValueError("La cédula debe contener solo números")
-Se agrega validación de cédula
+        self._nombre = nombre
 
-        # Guarda la cédula del cliente
-        self.cedula = cedula
+        # Valida que la cédula tenga solo números
+        if not cedula.isdigit():
+            raise ValueError("La cédula debe contener solo números")
 
-        # Guarda el teléfono del cliente
-        self.telefono = telefono
+        # Guarda la cédula
+        self._cedula = cedula
 
-        # Guarda el correo electrónico
-        self.correo = correo
+        # Valida teléfono
+        if len(telefono) < 7:
+            raise ValueError("Teléfono inválido")
 
-        # Guarda la dirección del cliente
-        self.direccion = direccion
+        # Guarda teléfono
+        self._telefono = telefono
+
+        # Valida correo
+        if "@" not in correo:
+            raise ValueError("Correo inválido")
+
+        # Guarda correo
+        self._correo = correo
+
+        # Guarda dirección
+        self._direccion = direccion
 
     #==================================
-    # Método para mostrar información
+    # Método mostrar perfil
     #==================================
     def mostrar_perfil(self):
 
-        # Retorna la información organizada
         return f"""
-        Nombre: {self.nombre}
-        Cédula: {self.cedula}
-        Teléfono: {self.telefono}
-        Correo: {self.correo}
-        Dirección: {self.direccion}
+        Nombre: {self._nombre}
+        Cédula: {self._cedula}
+        Teléfono: {self._telefono}
+        Correo: {self._correo}
+        Dirección: {self._direccion}
         """
 
     #==================================
-    # Método para actualizar teléfono
+    # Actualizar teléfono
     #==================================
     def actualizar_telefono(self, nuevo_telefono):
-
-        # Cambia el teléfono del cliente
-        self.telefono = nuevo_telefono
+        self._telefono = nuevo_telefono
 
     #==================================
-    # Método para actualizar correo
+    # Actualizar correo
     #==================================
     def actualizar_correo(self, nuevo_correo):
-
-        # Cambia el correo del cliente
-        self.correo = nuevo_correo
+        self._correo = nuevo_correo
 
     #==================================
-    # Método para actualizar dirección
+    # Actualizar dirección
     #==================================
     def actualizar_direccion(self, nueva_direccion):
-
-        # Cambia la dirección del cliente
-        self.direccion = nueva_direccion
+        self._direccion = nueva_direccion
