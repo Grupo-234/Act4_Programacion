@@ -1,7 +1,10 @@
 # Clase Cliente Completa
 
+from abc import ABC, abstractmethod
+# Importamos las herramientas de infraestructura
+from logger_config import registrar_evento, ErrorValidacionDatos
 
-```python
+
 #==================================
 # Clase Cliente
 # Hereda de EntidadPersona
