@@ -1,4 +1,6 @@
-# Clase Cliente Completa
+##============================
+#Importamos la clase base EntidadPersona
+##############################
 
 from abc import ABC, abstractmethod
 # Importamos las herramientas de infraestructura
@@ -10,6 +12,19 @@ from logger_config import registrar_evento, ErrorValidacionDatos
 # Hereda de EntidadPersona
 # Maneja la información del cliente
 #==================================
+
+# Creamos una clase abstracta para representar a personas en general
+class EntidadPersona(ABC): # Clase Abstracta
+    def __init__(self, tipo_doc, num_doc, nombre, telefono, correo=None):
+        self._tipo_doc = tipo_doc
+        # Aquí aplicamos las validaciones que discutimos
+        self._num_doc = self._validar_documento(num_doc)
+        self._nombre = nombre
+        self._telefono = self._validar_telefono(telefono)
+        self._correo = correo
+        self._estado = "Activo"
+
+
 
 class Cliente(EntidadPersona):
 
@@ -105,6 +120,6 @@ class Cliente(EntidadPersona):
 
         # Retorna información corta del cliente
         return f"{self._nombre} - {self._correo}"
-```
+
 
 
