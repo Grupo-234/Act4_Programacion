@@ -70,7 +70,7 @@ def actualizar_total_recaudado():
         except: continue
     lbl_total_recaudado.config(text=f"Total Recaudado: ${total:,.2f}")
 
-'''######################################
+######################################
 # Función para limpiar los campos de entrada
 ######################################
 def limpiar_campos():
@@ -111,7 +111,7 @@ def al_seleccionar_detalle(event):
     entry_costo_servicio.config(state="normal")
     entry_costo_servicio.delete(0, tk.END)
     entry_costo_servicio.insert(0, str(precio))
-    entry_costo_servicio.config(state="readonly")'''
+    entry_costo_servicio.config(state="readonly")
 
 ######################################
 # Funciones para procesar la reserva, incluyendo validaciones de entrada, 
@@ -211,3 +211,88 @@ def eliminar_registro():
             tabla.delete(item)
         guardar_datos()
         actualizar_total_recaudado()
+
+##############################
+# Configuración de la ventana principal y creación de los widgets
+##############################
+
+# Crear la ventana principal de la aplicación
+root = tk.Tk()
+root.title("Software FJ - Gestión de Reservas")
+root.geometry("950x850")
+
+# Crear un marco para los datos del cliente
+f_cli = ttk.LabelFrame(root, text=" Datos de Cliente ", padding=10)
+f_cli.pack(fill="x", padx=20, pady=10)
+
+# Crear los campos de entrada para los datos del cliente
+ttk.Label(f_cli, text="Tipo Doc:").grid(row=0, column=0, sticky="w")
+combo_tipo_doc = ttk.Combobox(f_cli, values=["CC", "RUT", "CE"], width=7, state="readonly")
+combo_tipo_doc.grid(row=0, column=1, sticky="w")
+
+# Campo de número de documento
+ttk.Label(f_cli, text="Documento:").grid(row=0, column=2, sticky="w", padx=(10,0))
+entry_num_doc = ttk.Entry(f_cli); entry_num_doc.grid(row=0, column=3, sticky="ew")
+
+# Campo de nombre del cliente
+ttk.Label(f_cli, text="Nombre:").grid(row=1, column=0, sticky="w", pady=5)
+entry_nombre = ttk.Entry(f_cli); entry_nombre.grid(row=1, column=1, columnspan=3, sticky="ew")
+ttk.Label(f_cli, text="Teléfono (10 dígitos):").grid(row=2, column=0, sticky="w")
+
+# Campo de teléfono del cliente
+entry_telefono = ttk.Entry(f_cli); entry_telefono.grid(row=2, column=1, columnspan=3, sticky="ew")
+f_cli.columnconfigure(3, weight=1)
+
+
+# Crear un marco para la configuración y reserva de servicios
+
+f_res = ttk.LabelFrame(root, text=" Configuración y Reserva ", padding=10)
+f_res.pack(fill="x", padx=20)
+
+# Campos para seleccionar el servicio, detalle, costo unitario, cantidad/días y fecha
+ttk.Label(f_res, text="Servicio:").grid(row=0, column=0, sticky="w")
+
+# Combobox para seleccionar el tipo de servicio, con un evento que actualiza los detalles disponibles
+combo_servicio = ttk.Combobox(f_res, values=["Equipo", "Sala", "Asesoria"], state="readonly")
+combo_servicio.grid(row=0, column=1, sticky="ew"); combo_servicio.bind("<<ComboboxSelected>>", actualizar_detalles)
+
+# Combobox para seleccionar el detalle del servicio, que se actualiza según el servicio seleccionado
+ttk.Label(f_res, text="Detalle:").grid(row=1, column=0, sticky="w", pady=5)
+combo_detalle = ttk.Combobox(f_res, state="readonly")
+combo_detalle.grid(row=1, column=1, sticky="ew"); combo_detalle.bind("<<ComboboxSelected>>", al_seleccionar_detalle)
+
+# Campo de costo unitario
+ttk.Label(f_res, text="Costo Unit:").grid(row=2, column=0, sticky="w")
+entry_costo_servicio = ttk.Entry(f_res, state="readonly")
+entry_costo_servicio.grid(row=2, column=1, sticky="ew")
+
+# Campo de cantidad/días
+ttk.Label(f_res, text="Días/Cant:").grid(row=3, column=0, sticky="w", pady=5) # Etiqueta para cantidad o días, dependiendo del servicio seleccionado
+entry_cantidad = ttk.Entry(f_res); entry_cantidad.insert(0, "1"); entry_cantidad.grid(row=3, column=1, sticky="ew") # Campo de entrada para la cantidad o días, con un valor predeterminado de 1
+ttk.Label(f_res, text="Fecha (AAAA-MM-DD):").grid(row=4, column=0, sticky="w")# Etiqueta para la fecha de inicio de la reserva, con un formato específico
+entry_fecha = ttk.Entry(f_res)
+entry_fecha.insert(0, datetime.now().strftime("%Y-%m-%d"))# Campo de entrada para la fecha, con un valor predeterminado de la fecha actual en formato AAAA-MM-DD
+entry_fecha.grid(row=4, column=1, sticky="ew")
+f_res.columnconfigure(1, weight=1)
+
+# Crear un marco para los botones de acción
+f_btns = tk.Frame(root); f_btns.pack(pady=15)
+ttk.Button(f_btns, text="Registrar", command=procesar_reserva).pack(side="left", padx=5)
+ttk.Button(f_btns, text="Marcar Devolución", command=registrar_devolucion).pack(side="left", padx=5)
+ttk.Button(f_btns, text="Eliminar Registro", command=eliminar_registro).pack(side="left", padx=5)
+
+# Crear la tabla para mostrar las reservas
+columnas = ("F", "D", "C", "S", "T", "Fi", "E")
+tabla = ttk.Treeview(root, columns=columnas, show="headings", height=12)
+for c, n in zip(columnas, ["Fecha", "Doc", "Cliente", "Servicio", "Total", "Fin", "Estado"]):
+    tabla.heading(c, text=n); tabla.column(c, width=120, anchor="center")
+tabla.pack(fill="both", expand=True, padx=20)
+
+# Etiqueta para mostrar el total recaudado
+lbl_total_recaudado = ttk.Label(root, text="Total Recaudado: $0.00", font=("Arial", 12, "bold"))
+lbl_total_recaudado.pack(pady=10)
+
+# Cargar datos al iniciar la aplicación y actualizar el total recaudado
+cargar_datos()
+actualizar_total_recaudado()
+root.mainloop()
