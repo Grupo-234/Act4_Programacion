@@ -14,9 +14,19 @@ import os # os para interactuar con el sistema operativo, como verificar la exis
 # Configuración del logging para registrar eventos y errores
 ##########################
 logging.basicConfig(
-    filename='registro_eventos.log', 
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S',
-    force=True
+    filename='registro_eventos.log', # Archivo donde se guardarán los registros de eventos
+    level=logging.INFO, # Nivel de logging, INFO para registrar eventos informativos, ERROR para registrar errores
+    format='%(asctime)s - %(levelname)s - %(message)s', # Formato del mensaje de logging, incluye la fecha y hora, el nivel de logging y el mensaje
+    datefmt='%Y-%m-%d %H:%M:%S', # Formato de la fecha y hora en los registros
+    force=True # Forzar la configuración del logging, útil para evitar conflictos con configuraciones previas de logging en otros módulos o bibliotecas
 )
+
+######################################
+# Función para registrar eventos en el archivo de logging
+######################################
+def registrar_log(mensaje, nivel="INFO"): 
+    if nivel == "INFO": logging.info(mensaje) # Registrar un evento informativo
+    elif nivel == "ADVERTENCIA": logging.warning(mensaje) # Registrar un evento de advertencia
+    elif nivel == "ERROR": logging.error(mensaje) # Registrar un evento de error
+    for handler in logging.root.handlers:
+        handler.flush()
