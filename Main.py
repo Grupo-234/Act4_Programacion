@@ -36,9 +36,36 @@ def registrar_log(mensaje, nivel="INFO"):
 ######################################
 def guardar_datos():
     try:
-        with open('reservas.csv', 'w', newline='', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            for item in tabla.get_children():
-                writer.writerow(tabla.item(item)['values'])
+        with open('reservas.csv', 'w', newline='', encoding='utf-8') as file: # Abrir el archivo CSV en modo escritura
+            writer = csv.writer(file) # Crear un objeto writer para escribir en el archivo CSV
+            for item in tabla.get_children(): # Iterar sobre los elementos de la tabla de reservas
+                writer.writerow(tabla.item(item)['values']) # Escribir los valores de cada elemento de la tabla en el archivo CSV
     except Exception as e:
-        registrar_log(f"SISTEMA - Error al guardar: {e}", "ERROR")
+        registrar_log(f"SISTEMA - Error al guardar: {e}", "ERROR") # Registrar un error si ocurre una excepción al guardar 
+
+
+######################################
+# Función para cargar datos desde un archivo CSV y llenar la tabla de reservas
+######################################
+def cargar_datos():
+    if os.path.exists('reservas.csv'): # Verificar si el archivo CSV existe antes de intentar cargar los datos
+        try:
+            with open('reservas.csv', 'r', encoding='utf-8') as file: # Abrir el archivo CSV en modo lectura
+                reader = csv.reader(file) # Crear un objeto reader para leer el archivo CSV
+                for row in reader:
+                    tabla.insert("", "end", values=row)
+        except Exception as e:
+            registrar_log(f"SISTEMA - Error al cargar: {e}", "ERROR") # Registrar un error si ocurre una excepción al cargar los datos
+
+######################################
+# Función para actualizar el total recaudado sumando los valores de la columna "Total"
+######################################
+def actualizar_total_recaudado():
+    total = 0.0
+    for item in tabla.get_children():
+        valores = tabla.item(item)['values']
+        try:
+            val = str(valores[4]).replace('$', '').replace(',', '')
+            total += float(val)
+        except: continue
+    lbl_total_recaudado.config(text=f"Total Recaudado: ${total:,.2f}")
