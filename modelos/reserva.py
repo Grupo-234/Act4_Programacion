@@ -25,6 +25,7 @@ class Reserva:
 ###########################
 # Métodos para gestionar la reserva
 ############################
+# Método para confirmar la reserva, que genera un mensaje de log con los detalles de la reserva y confirma el proceso.
     def confirmar_reserva(self):
         """Genera el mensaje para el log y confirma el proceso."""
         resumen_log = (
@@ -34,16 +35,17 @@ class Reserva:
         registrar_evento(resumen_log, nivel="info")
         return "Reserva procesada y registrada exitosamente."
     
+    # Método para representar la reserva como una cadena de texto, mostrando los detalles de la reserva.
     def __str__(self):
-        """Trae la información de cliente, servicio y reserva."""
+        
         return (
             f"\n==============================="
             f"\n       COMPROBANTE DE RESERVA  "
             f"\n==============================="
-            f"\nFECHA: {self.fecha}"
-            f"\nCLIENTE: {self.cliente._nombre} ({self.cliente._tipo_doc}: {self.cliente._num_doc})"
-            f"\nSERVICIO: {self.servicio._nombre_servicio}"
-            f"\nCANTIDAD: {self.cantidad}"
-            f"\nTOTAL A PAGAR: ${self.total}"
+            f"\nFecha: {self.fecha}"
+            f"\nCliente: {self.cliente._nombre} ({self.cliente._tipo_doc}: {self.cliente._num_doc})"
+            f"\nServicio: {self.servicio._nombre_servicio}"
+            f"\nCantidad: {self.cantidad}"
+            f"\nTotal a Pagar: ${self.total}"
             f"\n===============================\n"
         )
