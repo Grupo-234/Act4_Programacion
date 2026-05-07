@@ -20,3 +20,11 @@ class AlquilerEquipo(Servicio):
 
     def calcular_precio(self, cantidad):
         return self.precio_base * cantidad
+    
+# Clase que representa el servicio de asesoría, hereda de Servicio
+class Asesoria(Servicio):
+    def __init__(self, nivel, costo_personalizado):
+        super().__init__(f"Asesoria {nivel}", costo_personalizado)
+
+    def calcular_precio(self, sesiones):
+        return self.precio_base * sesiones
