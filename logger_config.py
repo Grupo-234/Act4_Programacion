@@ -19,10 +19,18 @@ logging.basicConfig(
 #Excepciones personalizadas para validación de datos
 #############################
 class ErrorValidacionDatos(Exception):
-    """Se dispara si el ID o Teléfono no cumplen el formato."""
+    """Se dispara si el ID o Telefono no cumplen el formato."""
     pass
 
 
 class ErrorOperacionReserva(Exception):
     """Se dispara si algo falla al intentar confirmar una reserva."""
     pass
+
+# Función para registrar eventos en el log. 
+# Centraliza el manejo de logs para facilitar su uso en todo el proyecto.
+def registrar_evento(mensaje, nivel="info"):
+    if nivel == "error":
+        logging.error(mensaje)
+    else:
+        logging.info(mensaje)
