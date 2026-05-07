@@ -119,6 +119,7 @@ def al_seleccionar_detalle(event):
 ######################################
 
 def procesar_reserva():
+    # Obtener y limpiar los datos de entrada
     doc = entry_num_doc.get().strip()
     nom = entry_nombre.get().strip()
     tel = entry_telefono.get().strip()
@@ -127,14 +128,15 @@ def procesar_reserva():
     costo = entry_costo_servicio.get().strip()
     cant = entry_cantidad.get().strip()
 
-    # Validaciones
+    # Validaciones de entrada para asegurar que los datos sean correctos antes de procesar la reserva
     if not doc.isdigit():
-        registrar_log(f"FALLO: Documento '{doc}' no numérico", "WARNING")
+        registrar_log(f"FALLO: Documento '{doc}' no numérico", "PRECAUCIÓN")
         return messagebox.showerror("Error", "El documento debe ser numérico.")
+    # Validación de nombre para permitir solo letras, espacios y caracteres acentuados
     if not re.match(r"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", nom):
-        registrar_log(f"FALLO: Nombre '{nom}' inválido", "WARNING")
+        registrar_log(f"FALLO: Nombre '{nom}' inválido", "PRECAUCIÓN") # Registrar un evento de precaución si el nombre no es válido, indicando el nombre ingresado
         return messagebox.showerror("Error", "El nombre solo debe contener letras.")
-    if len(tel) != 10 or not tel.isdigit():
+    if len(tel) != 10 or not tel.isdigit(): # Validación de teléfono para asegurar que tenga exactamente 10 dígitos numéricos
         return messagebox.showerror("Error", "El teléfono debe tener 10 números.")
 
     try:
@@ -143,11 +145,14 @@ def procesar_reserva():
         f_ini = entry_fecha.get()
         f_fin = (datetime.strptime(f_ini, "%Y-%m-%d") + timedelta(days=int(cant)-1)).strftime("%Y-%m-%d")
         
+        # El estado se determina automáticamente: "Finalizado" para asesorías (servicio puntual) y "En Uso" para equipos y salas (servicios por días)
         estado = "Finalizado" if combo_servicio.get() == "Asesoria" else "En Uso"
         doc_full = f"{tipo} {doc}"
         
+        # Insertar el nuevo registro en la tabla de reservas con los datos procesados
         tabla.insert("", "end", values=(f_ini, doc_full, nom, det, f"${total_numerico:,.2f}", f_fin, estado))
         
+        # Registrar un evento de éxito en el logging, indicando el nombre del cliente y el total calculado para la reserva
         registrar_log(f"EXITO - Registro: {nom} | Total: ${total_numerico:,.2f}")
         guardar_datos()
         actualizar_total_recaudado()
