@@ -69,3 +69,20 @@ def actualizar_total_recaudado():
             total += float(val)
         except: continue
     lbl_total_recaudado.config(text=f"Total Recaudado: ${total:,.2f}")
+
+'''######################################
+# 
+######################################
+def limpiar_campos():
+    entry_num_doc.delete(0, tk.END)
+    entry_nombre.delete(0, tk.END)
+    entry_telefono.delete(0, tk.END)
+    # Habilitar temporalmente para limpiar campo bloqueado
+    entry_costo_servicio.config(state="normal")
+    entry_costo_servicio.delete(0, tk.END)
+    entry_costo_servicio.config(state="readonly")
+    combo_tipo_doc.set('')
+    combo_servicio.set('')
+    combo_detalle.set('')
+    entry_cantidad.delete(0, tk.END)
+    entry_cantidad.insert(0, "1")'''
