@@ -30,3 +30,15 @@ def registrar_log(mensaje, nivel="INFO"):
     elif nivel == "ERROR": logging.error(mensaje) # Registrar un evento de error
     for handler in logging.root.handlers:
         handler.flush()
+    
+######################################
+# Función para cargar datos desde un archivo CSV y llenar la tabla de reservas
+######################################
+def guardar_datos():
+    try:
+        with open('reservas.csv', 'w', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            for item in tabla.get_children():
+                writer.writerow(tabla.item(item)['values'])
+    except Exception as e:
+        registrar_log(f"SISTEMA - Error al guardar: {e}", "ERROR")
