@@ -18,13 +18,13 @@ logging.basicConfig(
 #############################
 #Excepciones personalizadas para validación de datos
 #############################
+
+#Se dispara si el ID o Telefono no cumplen el formato
 class ErrorValidacionDatos(Exception):
-    """Se dispara si el ID o Telefono no cumplen el formato."""
-    pass
+   pass
 
-
-class ErrorOperacionReserva(Exception):
-    """Se dispara si algo falla al intentar confirmar una reserva."""
+#Se dispara si algo falla al intentar confirmar una reserva
+class ErrorOperacionReserva(Exception):    
     pass
 
 # Función para registrar eventos en el log. 
@@ -34,3 +34,27 @@ def registrar_evento(mensaje, nivel="info"):
         logging.error(mensaje)
     else:
         logging.info(mensaje)
+
+
+#Clase base para errores del sistema Software FJ
+class ErrorValidacionFJ(Exception):   
+    def __init__(self, mensaje):
+        self.mensaje = mensaje  # Aquí definimos el atributo 'mensaje'
+        super().__init__(self.mensaje)
+
+
+
+# Excepciones específicas para validaciones comunes en el sistema
+#Se lanza cuando un campo (Documento/Teléfono) contiene letras o símbolos
+class ErrorDatoNoNumerico(ErrorValidacionFJ):    
+    def __init__(self, campo, valor):
+        self.mensaje = f"Error Critico: El {campo} '{valor}' no es un dato numerico válido."
+        super().__init__(self.mensaje)
+
+
+#Se lanza cuando el teléfono tiene más de 10 dígitos o no es numérico
+#Se lanza cuando un parámetro obligatorio falta
+class ErrorCampoVacio(ErrorValidacionFJ):    
+    def __init__(self, campo):
+        self.mensaje = f"Fallo en Registro: El parámetro '{campo}' es obligatorio."
+        super().__init__(self.mensaje)
