@@ -3,8 +3,9 @@
 ##############################
 
 from abc import ABC, abstractmethod
-# Importamos las herramientas de infraestructura
 from logger_config import registrar_evento, ErrorValidacionDatos
+from logger_config import ErrorCampoVacio, ErrorDatoNoNumerico
+from logger_config import registrar_evento, ErrorValidacionFJ
 
 
 #==================================
@@ -16,14 +17,36 @@ from logger_config import registrar_evento, ErrorValidacionDatos
 # Creamos una clase abstracta para representar a personas en general
 class EntidadPersona(ABC): # Clase Abstracta
     def __init__(self, tipo_doc, num_doc, nombre, telefono, correo=None):
-        self._tipo_doc = tipo_doc
-        # Aquí aplicamos las validaciones que discutimos
+        self._tipo_doc = tipo_doc      
         self._num_doc = self._validar_documento(num_doc)
         self._nombre = nombre
         self._telefono = self._validar_telefono(telefono)
         self._correo = correo
         self._estado = "Activo"
 
+    
+    @abstractmethod
+    def mostrar_perfil(self): 
+        """Este método es obligatorio para quienes hereden de aquí"""
+        pass
+
+    # Método para validar el número de documento
+    def _validar_documento(self, valor):
+        # Implementamos la lógica de "Solo números"
+        if not str(valor).isdigit():
+            msg = f"Error Critico: El documento '{valor}' no es numerico."
+            registrar_evento(msg, nivel="error")
+            raise ErrorValidacionDatos(msg)
+        return valor
+
+    # Método para validar el teléfono
+    def _validar_telefono(self, valor):
+        # Implementamos la lógica de "Solo números y máximo 10 dígitos"
+        if not (str(valor).isdigit() and len(str(valor)) <= 10):
+            msg = f"Error Crítico: Teléfono '{valor}' inválido (Máx 10 dígitos)."
+            registrar_evento(msg, nivel="error")
+            raise ErrorValidacionDatos(msg)
+        return valor
 
 
 class Cliente(EntidadPersona):
