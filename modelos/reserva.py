@@ -40,7 +40,7 @@ class Reserva:
         
         return (
             f"\n==============================="
-            f"\n       COMPROBANTE DE RESERVA  "
+            f"\n       Confirmación de Reserva "
             f"\n==============================="
             f"\nFecha: {self.fecha}"
             f"\nCliente: {self.cliente._nombre} ({self.cliente._tipo_doc}: {self.cliente._num_doc})"
