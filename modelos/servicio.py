@@ -13,3 +13,10 @@ class ReservaSala(Servicio):
     def calcular_precio(self, horas):
         return self.precio_base * horas
 
+# Clase que representa el servicio de alquiler de equipo, hereda de Servicio
+class AlquilerEquipo(Servicio):
+    def __init__(self, detalle_equipo, costo_personalizado):
+        super().__init__(f"Alquiler de {detalle_equipo}", costo_personalizado)
+
+    def calcular_precio(self, cantidad):
+        return self.precio_base * cantidad
