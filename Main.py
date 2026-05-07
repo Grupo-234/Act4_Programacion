@@ -71,7 +71,7 @@ def actualizar_total_recaudado():
     lbl_total_recaudado.config(text=f"Total Recaudado: ${total:,.2f}")
 
 '''######################################
-# 
+# Función para limpiar los campos de entrada
 ######################################
 def limpiar_campos():
     entry_num_doc.delete(0, tk.END)
@@ -85,4 +85,129 @@ def limpiar_campos():
     combo_servicio.set('')
     combo_detalle.set('')
     entry_cantidad.delete(0, tk.END)
-    entry_cantidad.insert(0, "1")'''
+    entry_cantidad.insert(0, "1")
+
+######################################
+# Funciones para actualizar los detalles del servicio y 
+# calcular el costo del servicio al seleccionar un detalle
+######################################
+
+def actualizar_detalles(event):
+    opciones = {
+        "Equipo": ["PC Gamer", "Laptop Oficina", "Silla Ergonómica"],
+        "Sala": ["Reserva de Sala", "Sala de Juntas", "Sala de Capacitación"],
+        "Asesoria": ["Legal", "Técnica", "Contable"]
+    }
+    combo_detalle.config(values=opciones.get(combo_servicio.get(), []))
+
+def al_seleccionar_detalle(event):
+    precios = {
+        "PC Gamer": 20000, "Laptop Oficina": 10000, "Silla Ergonómica": 5000,
+        "Legal": 50000, "Técnica": 30000, "Contable": 40000, 
+        "Reserva de Sala": 15000, "Sala de Juntas": 20000, "Sala de Capacitación": 25000
+    }
+    precio = precios.get(combo_detalle.get(), 0)
+    # Bloqueo únicamente del valor del servicio
+    entry_costo_servicio.config(state="normal")
+    entry_costo_servicio.delete(0, tk.END)
+    entry_costo_servicio.insert(0, str(precio))
+    entry_costo_servicio.config(state="readonly")'''
+
+######################################
+# Funciones para procesar la reserva, incluyendo validaciones de entrada, 
+# cálculo del costo total, y actualización de la tabla de reservas
+######################################
+
+def procesar_reserva():
+    doc = entry_num_doc.get().strip()
+    nom = entry_nombre.get().strip()
+    tel = entry_telefono.get().strip()
+    tipo = combo_tipo_doc.get()
+    det = combo_detalle.get()
+    costo = entry_costo_servicio.get().strip()
+    cant = entry_cantidad.get().strip()
+
+    # Validaciones
+    if not doc.isdigit():
+        registrar_log(f"FALLO: Documento '{doc}' no numérico", "WARNING")
+        return messagebox.showerror("Error", "El documento debe ser numérico.")
+    if not re.match(r"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", nom):
+        registrar_log(f"FALLO: Nombre '{nom}' inválido", "WARNING")
+        return messagebox.showerror("Error", "El nombre solo debe contener letras.")
+    if len(tel) != 10 or not tel.isdigit():
+        return messagebox.showerror("Error", "El teléfono debe tener 10 números.")
+
+    try:
+        # Cálculo: Costo Unitario x Cantidad
+        total_numerico = float(costo) * int(cant)
+        f_ini = entry_fecha.get()
+        f_fin = (datetime.strptime(f_ini, "%Y-%m-%d") + timedelta(days=int(cant)-1)).strftime("%Y-%m-%d")
+        
+        estado = "Finalizado" if combo_servicio.get() == "Asesoria" else "En Uso"
+        doc_full = f"{tipo} {doc}"
+        
+        tabla.insert("", "end", values=(f_ini, doc_full, nom, det, f"${total_numerico:,.2f}", f_fin, estado))
+        
+        registrar_log(f"EXITO - Registro: {nom} | Total: ${total_numerico:,.2f}")
+        guardar_datos()
+        actualizar_total_recaudado()
+        limpiar_campos() # Borra los datos después de registrar
+        messagebox.showinfo("Éxito", "Registro completado.")
+    except Exception as e:
+        registrar_log(f"ERROR: {e}", "ERROR")
+
+
+######################################
+# Función para registrar la devolución de un servicio, actualizando el estado y 
+# recalculando el total si es necesario
+######################################
+def registrar_devolucion():
+    seleccion = tabla.selection()
+    if not seleccion: return
+    
+    # Usa la fecha del campo de texto para calcular la entrega
+    fecha_entrega_str = entry_fecha.get().strip()
+    try:
+        f_entrega = datetime.strptime(fecha_entrega_str, "%Y-%m-%d")
+    except:
+        return messagebox.showerror("Error", "Formato de fecha inválido.")
+
+    for item in seleccion:
+        v = list(tabla.item(item)['values'])
+        if v[6] == "En Uso":
+            f_ini = datetime.strptime(v[0], "%Y-%m-%d")
+            # Diferencia de días + 1 para cobro inclusivo
+            dias_reales = (f_entrega - f_ini).days + 1
+            
+            if dias_reales < 1: continue
+
+            # Precios base para el recalcular el total real
+            precios = {
+                "PC Gamer": 20000, "Laptop Oficina": 10000, "Silla Ergonómica": 5000,
+                "Legal": 50000, "Técnica": 30000, "Contable": 40000, 
+                "Reserva de Sala": 15000, "Sala de Juntas": 20000, "Sala de Capacitación": 25000
+            }
+            costo_u = precios.get(v[3], 0)
+            
+            v[4] = f"${(costo_u * dias_reales):,.2f}"
+            v[5] = fecha_entrega_str
+            v[6] = "Devuelto"
+            tabla.item(item, values=v)
+            
+    guardar_datos()
+    actualizar_total_recaudado()
+    messagebox.showinfo("Éxito", "Estado actualizado.")
+
+
+######################################
+# Función para eliminar un registro de la tabla
+######################################
+
+def eliminar_registro():
+    seleccion = tabla.selection()
+    if not seleccion: return
+    if messagebox.askyesno("Confirmar", "¿Eliminar registro?"):
+        for item in seleccion:
+            tabla.delete(item)
+        guardar_datos()
+        actualizar_total_recaudado()
