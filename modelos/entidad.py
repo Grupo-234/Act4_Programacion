@@ -49,100 +49,51 @@ class EntidadPersona(ABC): # Clase Abstracta
         return valor
 
 
-class Cliente(EntidadPersona):
+###############################
+#Clase Cliente que hereda de EntidadPersona
+###############################
+class Cliente:
+    def __init__(self, nombre, documento, telefono):
+        self.nombre = nombre        # Llama al setter de nombre
+        self.documento = documento  # Llama al setter de documento
+        self.telefono = telefono    # Llama al setter de telefono
 
-    # Constructor de la clase
-    # Recibe los datos principales del cliente
-    def __init__(self, nombre, cedula, telefono, correo, direccion):
+    @property # Decorador para el getter del documento
+    def documento(self):
+        return self._documento
 
-        # Guarda el nombre del cliente
-        self._nombre = nombre
+    @documento.setter # Decorador para el setter del documento
+    def documento(self, valor):
+        if not valor:
+            raise ErrorCampoVacio("Documento")
+        if not valor.isdigit():
+            raise ErrorDatoNoNumerico("Documento", valor)
+        self._documento = valor
 
-        # Valida que la cédula tenga solo números
-        if not cedula.isdigit():
-            raise ValueError("La cédula debe contener solo números")
+    @property # Decorador para el getter del telefono
+    def telefono(self):
+        return self._telefono
 
-        # Guarda la cédula
-        self._cedula = cedula
+    @telefono.setter # Decorador para el setter del telefono    
+    def telefono(self, valor):
+        if not valor.isdigit():
+            raise ErrorDatoNoNumerico("Telefono", valor)
+        
+        if len(valor) != 10:
+            # Enviamos el texto directamente a la clase base
+            raise ErrorValidacionFJ(f"Telefono '{valor}' inválido (Debe tener 10 digitos)")
+            
+        self._telefono = valor
 
-        # Valida longitud del teléfono
-        if len(telefono) < 7:
-            raise ValueError("Teléfono inválido")
+    @property
+    def nombre(self):
+        return self._nombre
 
-        # Guarda teléfono
-        self._telefono = telefono
-
-        # Valida correo
-        if "@" not in correo:
-            raise ValueError("Correo inválido")
-
-        # Guarda correo
-        self._correo = correo
-
-        # Valida dirección
-        if direccion == "":
-            raise ValueError("La dirección no puede estar vacía")
-
-        # Guarda dirección
-        self._direccion = direccion
-
-    #==================================
-    # Método para mostrar información
-    #==================================
-    def mostrar_perfil(self):
-
-        # Retorna la información organizada
-        return f"""
-        Nombre: {self._nombre}
-        Cédula: {self._cedula}
-        Teléfono: {self._telefono}
-        Correo: {self._correo}
-        Dirección: {self._direccion}
-        """
-
-    #==================================
-    # Método para actualizar teléfono
-    #==================================
-    def actualizar_telefono(self, nuevo_telefono):
-
-        # Valida longitud mínima
-        if len(nuevo_telefono) < 7:
-            raise ValueError("Teléfono inválido")
-
-        # Actualiza teléfono
-        self._telefono = nuevo_telefono
-
-    #==================================
-    # Método para actualizar correo
-    #==================================
-    def actualizar_correo(self, nuevo_correo):
-
-        # Valida correo
-        if "@" not in nuevo_correo:
-            raise ValueError("Correo inválido")
-
-        # Actualiza correo
-        self._correo = nuevo_correo
-
-    #==================================
-    # Método para actualizar dirección
-    #==================================
-    def actualizar_direccion(self, nueva_direccion):
-
-        # Valida dirección
-        if nueva_direccion == "":
-            raise ValueError("La dirección no puede estar vacía")
-
-        # Actualiza dirección
-        self._direccion = nueva_direccion
-
-    #==================================
-    # Método resumen
-    #==================================
-    def resumen_cliente(self):
-
-        # Retorna información corta del cliente
-        return f"{self._nombre} - {self._correo}"
+    @nombre.setter
+    def nombre(self, valor):
+        if not valor.strip():
+            raise ErrorCampoVacio("Nombre")
+        self._nombre = valor
 
 
 
