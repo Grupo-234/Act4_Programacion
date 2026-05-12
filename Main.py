@@ -26,7 +26,7 @@ logging.basicConfig(
 ######################################
 def registrar_log(mensaje, nivel="INFO"): 
     if nivel == "INFO": logging.info(mensaje) # Registrar un evento informativo
-    elif nivel == "ADVERTENCIA": logging.warning(mensaje) # Registrar un evento de advertencia
+    elif nivel == "WARNING": logging.warning(mensaje) # Registrar un evento de WARNING
     elif nivel == "ERROR": logging.error(mensaje) # Registrar un evento de error
     for handler in logging.root.handlers:
         handler.flush()
@@ -130,15 +130,15 @@ def procesar_reserva():
 
     # Validaciones de entrada para asegurar que los datos sean correctos antes de procesar la reserva
     if not doc.isdigit():
-        registrar_log(f"FALLO: Documento '{doc}' no numérico", "PRECAUCIÓN")
-        return messagebox.showerror("Error", "El documento debe ser numérico.")
+        registrar_log(f"FALLO: Documento '{doc}' no numerico", "WARNING") #validar que el documento sea numérico
+        return messagebox.showerror("Error", "El documento debe ser numerico.")
     # Validación de nombre para permitir solo letras, espacios y caracteres acentuados
     if not re.match(r"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", nom):
-        registrar_log(f"FALLO: Nombre '{nom}' inválido", "PRECAUCIÓN") # Registrar un evento de precaución si el nombre no es válido, indicando el nombre ingresado
+        registrar_log(f"FALLO: Nombre '{nom}' invalido", "WARNING") #validar que el nombre solo contenga letras, espacios y caracteres acentuados
         return messagebox.showerror("Error", "El nombre solo debe contener letras.")
-    if len(tel) != 10 or not tel.isdigit(): # Validación de teléfono para asegurar que tenga exactamente 10 dígitos numéricos
+    if len(tel) != 10 or not tel.isdigit():
+        registrar_log(f"FALLO: Teléfono '{tel}' invalido", "WARNING") #validar que el teléfono tenga exactamente 10 dígitos y sea numérico
         return messagebox.showerror("Error", "El teléfono debe tener 10 números.")
-
     try:
         # Cálculo: Costo Unitario x Cantidad
         total_numerico = float(costo) * int(cant)

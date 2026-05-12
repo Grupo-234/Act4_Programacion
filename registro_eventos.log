@@ -1,2 +1,16 @@
-2026-05-07 18:22:44 - ERROR - ERROR: could not convert string to float: ''
-2026-05-07 18:22:55 - INFO - EXITO - Registro: LUIS CUAICAL | Total: $20,000.00
+2026-05-11 20:46:41 - WARNING - FALLO: Documento '10HHT' no numérico
+2026-05-11 20:46:56 - WARNING - FALLO: Documento 'JGJGJG' no numérico
+2026-05-11 20:47:08 - WARNING - FALLO: Nombre '12244' inválido
+2026-05-11 20:47:20 - WARNING - FALLO: Teléfono 'JJHH' inválido
+2026-05-11 20:47:32 - WARNING - FALLO: Teléfono '321451' inválido
+2026-05-11 20:47:43 - ERROR - ERROR: could not convert string to float: ''
+2026-05-11 20:47:44 - ERROR - ERROR: could not convert string to float: ''
+2026-05-11 20:47:49 - INFO - EXITO - Registro: LUIS | Total: $20,000.00
+2026-05-11 20:50:34 - WARNING - FALLO: Documento 'ssss' no numerico
+2026-05-11 20:50:49 - WARNING - FALLO: Nombre '121565' invalido
+2026-05-11 20:51:33 - WARNING - FALLO: Teléfono '32181033777' invalido
+2026-05-11 20:51:40 - INFO - EXITO - Registro: Luis Cuaical | Total: $20,000.00
+2026-05-11 20:52:03 - INFO - EXITO - Registro: INS SA ESP | Total: $20,000.00
+2026-05-11 20:52:28 - INFO - EXITO - Registro: INS SA ESP | Total: $50,000.00
+2026-05-11 20:53:07 - INFO - EXITO - Registro: Angie O | Total: $10,000.00
+2026-05-11 20:53:37 - INFO - EXITO - Registro: Yesid T | Total: $30,000.00
